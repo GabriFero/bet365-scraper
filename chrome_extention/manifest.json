@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "bet365 live scraper",
+  "version": "1.0",
+  "icons":{
+    "128":"img/logo.png",
+    "48":"img/logo.png",
+    "16":"img/logo.png"
+  },
+  "host_permissions": [
+    "https://*/*"
+  ],
+  "permissions": [
+    "storage", "activeTab", "scripting", "background"
+  ],
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "js/hook.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
