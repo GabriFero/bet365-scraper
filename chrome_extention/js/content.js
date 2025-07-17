@@ -7,6 +7,7 @@ function injectJs(href, callback){
 }
 
 injectJs(chrome.runtime.getURL("js/hook.js"));
+injectJs(chrome.runtime.getURL("js/iframe-manager.js"));
 
 
 
