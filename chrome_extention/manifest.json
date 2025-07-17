@@ -11,7 +11,7 @@
     "https://*/*"
   ],
   "permissions": [
-    "storage", "activeTab", "scripting", "background"
+    "storage", "activeTab", "scripting", "background", "tabs"
   ],
   "background": {
     "service_worker": "js/background.js"
@@ -29,7 +29,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "js/hook.js"
+        "js/hook.js",
+        "js/iframe-manager.js"
       ],
       "matches": ["<all_urls>"]
     }
