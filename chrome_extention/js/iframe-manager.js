@@ -29,7 +29,16 @@ class IframeManager {
         // Ascolta messaggi dal popup
         window.addEventListener('message', (event) => {
             if (event.data.type === 'TOGGLE_IFRAME_SCRAPING') {
+                console.log('[IframeManager] Received toggle message:', event.data);
                 this.toggleIframeScraping(event.data.enabled, event.data.sport);
+            }
+            else if (event.data.type === 'GET_IFRAME_STATUS') {
+                console.log('[IframeManager] Received status request');
+                // Invia risposta con stato corrente
+                window.postMessage({
+                    type: 'IFRAME_STATUS_RESPONSE',
+                    status: this.getStatus()
+                }, '*');
             }
         });
 
@@ -95,24 +104,36 @@ class IframeManager {
 
     async startIframeScraping() {
         console.log('[IframeManager] Starting iframe scraping...');
+        console.log('[IframeManager] Current sport:', this.currentSport);
+        console.log('[IframeManager] Fetching from:', `http://127.0.0.1:8485/live?sport=${this.currentSport}`);
         
         try {
             const response = await fetch(`http://127.0.0.1:8485/live?sport=${this.currentSport}`);
-            const events = await response.json();
+            console.log('[IframeManager] Fetch response status:', response.status);
             
+            const events = await response.json();
+            console.log('[IframeManager] Raw events data:', events);
             console.log(`[IframeManager] Found ${events.length} live events`);
             
             // Crea iframe per ogni evento (limitato dal maxConcurrentIframes)
             const eventsToProcess = events.slice(0, this.maxConcurrentIframes);
+            console.log('[IframeManager] Events to process:', eventsToProcess.length);
             
             for (const event of eventsToProcess) {
                 const eventId = event.web_page_id;
+                console.log('[IframeManager] Processing event:', event.event, 'ID:', eventId);
+                
                 if (eventId && !this.activeIframes.has(eventId)) {
+                    console.log('[IframeManager] Creating iframe for event:', eventId);
                     await this.createIframeForEvent(event);
                     // Piccola pausa tra creazioni iframe
                     await new Promise(resolve => setTimeout(resolve, 1000));
+                } else {
+                    console.log('[IframeManager] Skipping event (no ID or already exists):', eventId);
                 }
             }
+            
+            console.log('[IframeManager] Iframe creation complete. Active iframes:', this.activeIframes.size);
             
         } catch (error) {
             console.error('[IframeManager] Error fetching live events:', error);
