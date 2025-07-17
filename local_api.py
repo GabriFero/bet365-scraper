@@ -469,6 +469,7 @@ def soccer_data():
 
         markets = extract_markets(ev_fi)
         odds_list = extract_odds(ev_fi)
+        web_page_id = f"EV15{info.get('C2')}2C1"
 
         live_list.append({
             'event': info.get('NA'),
@@ -479,7 +480,8 @@ def soccer_data():
             'score': info.get('SS', ''),
             'period': period,
             'markets': markets,
-            'odds': odds_list
+            'odds': odds_list,
+            'web_page_id': web_page_id
         })
     return live_list
 
@@ -514,6 +516,7 @@ def basketball_data():
 
         markets = extract_markets(ev_fi)
         odds_list = extract_odds(ev_fi)
+        web_page_id = f"EV15{info.get('C2')}5C18"
 
         live_list.append({
             'event': info.get('NA'),
@@ -524,7 +527,8 @@ def basketball_data():
             'score': info.get('SS', ''),
             'period': info.get('CP'),
             'markets': markets,
-            'odds': odds_list
+            'odds': odds_list,
+            'web_page_id': web_page_id
         })
     return live_list
 
@@ -558,6 +562,7 @@ def tennis_data():
 
         markets = extract_markets(ev_fi)
         odds_list = extract_odds(ev_fi)
+        web_page_id = f"EV15{info.get('C2')}3C13"
 
         live_list.append({
             'event': info.get('NA'),
@@ -569,7 +574,8 @@ def tennis_data():
             'score': info.get('SS', ''),
             'period': period,
             'markets': markets,
-            'odds': odds_list
+            'odds': odds_list,
+            'web_page_id': web_page_id
         })
     return live_list
 
