@@ -309,7 +309,7 @@ else:
 
 
 def calculate_time_offset():
-    tz = pytz.timezone("Europe/London")
+    tz = pytz.timezone("Europe/Rome")
     now = datetime.now(tz)
     return 7*3600 if now.dst() != timedelta(0) else 8*3600
 
